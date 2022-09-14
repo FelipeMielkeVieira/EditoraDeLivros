@@ -13,6 +13,7 @@ public class Estante extends JFrame {
     private JTable tabelaLivros;
     private JButton voltarButton;
     private JButton editarButton;
+    private JLabel semLivros;
     private static int lista;
 
     public Estante(int botao) {
@@ -92,7 +93,13 @@ public class Estante extends JFrame {
 
     private void criarComponentes() {
         LivroController controller = new LivroController();
-        tabelaLivros.setModel(new DefaultTableModelCollection(controller.buscarLista(lista)));
+        try {
+            tabelaLivros.setModel(new DefaultTableModelCollection(controller.buscarLista(lista)));
+            semLivros.setVisible(false);
+        } catch (RuntimeException exception) {
+            tabelaLivros.setVisible(false);
+            semLivros.setVisible(true);
+        }
         if(lista == 1 && !(Menu.getUsuario() instanceof Revisor)) {
             editarButton.setVisible(false);
         }

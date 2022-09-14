@@ -16,6 +16,15 @@ public class Livro {
         this.status = status;
     }
 
+    public Livro(String titulo, Integer isbn, Integer qtdPaginas, Autor autor,  Status status, Editora editora) {
+        this.titulo = titulo;
+        this.isbn = isbn;
+        this.qtdPaginas = qtdPaginas;
+        this.autor = autor;
+        this.status = status;
+        this.editora = editora;
+    }
+
     public Livro() {
 
     }

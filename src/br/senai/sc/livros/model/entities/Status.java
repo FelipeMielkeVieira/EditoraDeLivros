@@ -2,7 +2,7 @@ package br.senai.sc.livros.model.entities;
 
 public enum Status {
 
-    AGUARDANDO_REVISAO("Aguardando Revisão"), EM_REVISAO("Em Revisão"), REPROVADO("Reprovado"), AGUARDANDO_EDICAO("Aguardando Edi"), APROVADO("Aprovado"), PUBLICADO("Publicado");
+    AGUARDANDO_REVISAO("AGUARDANDO_REVISAO"), EM_REVISAO("EM_REVISAO"), REPROVADO("REPROVADO"), AGUARDANDO_EDICAO("AGUARDANDO_EDICAO"), APROVADO("APROVADO"), PUBLICADO("Publicado");
 
     String nome;
 

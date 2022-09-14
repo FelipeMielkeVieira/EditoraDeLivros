@@ -3,11 +3,13 @@ package br.senai.sc.livros.controller;
 import br.senai.sc.livros.model.entities.*;
 import br.senai.sc.livros.model.service.LivroService;
 import br.senai.sc.livros.view.Menu;
+
+import java.sql.SQLException;
 import java.util.Collection;
 
 public class LivroController {
 
-    public void cadastrar(String titulo, String isbn, String qtdPaginas, Pessoa pessoa) {
+    public void cadastrar(String titulo, String isbn, String qtdPaginas, Pessoa pessoa) throws SQLException {
         Livro livro = Livro.cadastrar(titulo, Integer.parseInt(isbn), Integer.parseInt(qtdPaginas), (Autor) (pessoa));
         LivroService service = new LivroService();
         service.inserir(livro);
