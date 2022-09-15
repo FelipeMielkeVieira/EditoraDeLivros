@@ -71,4 +71,9 @@ public class LivroController {
         }
         service.atualizar(livro.getIsbn(), livro);
     }
+
+    public void adicionarEditora(Editora editora, Livro livroAtual) {
+        LivroService service = new LivroService();
+        service.adicionarEditora(editora, livroAtual);
+    }
 }

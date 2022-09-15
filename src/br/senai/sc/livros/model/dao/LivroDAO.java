@@ -45,7 +45,12 @@ public class LivroDAO {
         if (resultSet != null && resultSet.next()) {
 
             Autor autor = buscarAutor(resultSet.getString("pessoa_cpf"));
-            Editora editora = buscarEditora(resultSet.getInt("editora_id"));
+            Editora editora;
+            if(resultSet.getInt("editora_id") == 0) {
+                editora = null;
+            } else {
+                editora = buscarEditora(resultSet.getInt("editora_id"));
+            }
 
             Livro livro = new Livro(resultSet.getString("titulo"), resultSet.getInt("isbn"),
                     resultSet.getInt("qtd_paginas"), autor, Status.valueOf(resultSet.getString("status")), editora);
@@ -82,10 +87,15 @@ public class LivroDAO {
         ResultSet resultSet = statement.executeQuery();
 
         Collection<Livro> livros = new ArrayList<>();
-        while (resultSet.next()) {
+        while (resultSet != null && resultSet.next()) {
 
             Autor autor = buscarAutor(resultSet.getString("pessoa_cpf"));
-            Editora editora = buscarEditora(resultSet.getInt("editora_id"));
+            Editora editora;
+            if(resultSet.getInt("editora_id") == 0) {
+                editora = null;
+            } else {
+                editora = buscarEditora(resultSet.getInt("editora_id"));
+            }
 
             Livro livro = new Livro(resultSet.getString("titulo"), resultSet.getInt("isbn"),
                     resultSet.getInt("qtd_paginas"), autor, Status.valueOf(resultSet.getString("status")), editora);
@@ -106,38 +116,75 @@ public class LivroDAO {
         ResultSet resultSet = statement.executeQuery();
 
         ArrayList<Livro> livros = new ArrayList<>();
-        while (resultSet.next()) {
+        while (resultSet != null && resultSet.next()) {
+            Editora editora;
+            if(resultSet.getInt("editora_id") == 0) {
+                editora = null;
+            } else {
+                editora = buscarEditora(resultSet.getInt("editora_id"));
+            }
+
             Livro livro = new Livro(resultSet.getString("titulo"), resultSet.getInt("isbn"),
                     resultSet.getInt("qtd_paginas"), (Autor) pessoa,
-                    Status.valueOf(resultSet.getString("status")), buscarEditora(resultSet.getInt("editora_id")));
+                    Status.valueOf(resultSet.getString("status")), editora);
             livros.add(livro);
         }
         return livros;
     }
 
-    public Collection<Livro> selecionarPorStatus(Status status) {
-//        Collection<Livro> livrosStatus = new ArrayList<>();
-//        for (Livro livro : listaLivros) {
-//            if (livro.getStatus().equals(status)) {
-//                livrosStatus.add(livro);
-//            }
-//        }
-//        return livrosStatus;
-        return null;
+    public Collection<Livro> selecionarPorStatus(Status status) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection connection = conexao.conectaBD();
+        PreparedStatement statement = connection.prepareStatement("select * from livro where status = ?");
+        statement.setString(1, status.toString());
+
+        ResultSet resultSet = statement.executeQuery();
+        Collection<Livro> livrosStatus = new ArrayList<>();
+
+        while (resultSet != null && resultSet.next()) {
+            Autor autor = buscarAutor(resultSet.getString("pessoa_cpf"));
+
+            Editora editora;
+            if(resultSet.getInt("editora_id") == 0) {
+                editora = null;
+            } else {
+                editora = buscarEditora(resultSet.getInt("editora_id"));
+            }
+
+            Livro livro = new Livro(resultSet.getString("titulo"), resultSet.getInt("isbn"),
+                    resultSet.getInt("qtd_paginas"), autor,
+                    Status.valueOf(resultSet.getString("status")), editora);
+            livrosStatus.add(livro);
+        }
+        connection.close();
+        return livrosStatus;
     }
 
-    public Collection<Livro> selecionarAtividadesAutor(Pessoa pessoa) {
-//        Collection<Livro> livrosAutor = new ArrayList<>();
-//        if (listaLivros.isEmpty()) {
-//            return null;
-//        }
-//        for (Livro livro : listaLivros) {
-//            if (livro.getAutor().equals(pessoa) && livro.getStatus().equals(Status.AGUARDANDO_EDICAO)) {
-//                livrosAutor.add(livro);
-//            }
-//        }
-//        return livrosAutor;
-        return null;
+    public Collection<Livro> selecionarAtividadesAutor(Pessoa pessoa) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection connection = conexao.conectaBD();
+        PreparedStatement statement = connection.prepareStatement("select * from livro where pessoa_cpf = ? and status = ?");
+        statement.setString(1, pessoa.getCpf());
+        statement.setString(2, Status.AGUARDANDO_EDICAO.toString());
+
+        ResultSet resultSet = statement.executeQuery();
+        Collection<Livro> livrosAutor = new ArrayList<>();
+        while (resultSet != null && resultSet.next()) {
+            Autor autor = buscarAutor(resultSet.getString("pessoa_cpf"));
+            Editora editora;
+            if(resultSet.getInt("editora_id") == 0) {
+                editora = null;
+            } else {
+                editora = buscarEditora(resultSet.getInt("editora_id"));
+            }
+
+            Livro livro = new Livro(resultSet.getString("titulo"), resultSet.getInt("isbn"),
+                    resultSet.getInt("qtd_paginas"), autor,
+                    Status.valueOf(resultSet.getString("status")), editora);
+            livrosAutor.add(livro);
+        }
+        connection.close();
+        return livrosAutor;
     }
 
     public Autor buscarAutor(String cpf) throws SQLException {
@@ -147,6 +194,7 @@ public class LivroDAO {
         statement.setString(1, cpf);
 
         ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
         Autor autor = new Autor(resultSet.getString("nome"), resultSet.getString("sobrenome"),
                 resultSet.getString("email"), resultSet.getString("senha"),
                 resultSet.getString("cpf"), Genero.valueOf(resultSet.getString("genero")));
@@ -161,6 +209,7 @@ public class LivroDAO {
         statement.setInt(1, id);
 
         ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
         try {
             Editora editora = new Editora(resultSet.getString("nome"));
             connection.close();
@@ -168,5 +217,28 @@ public class LivroDAO {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public Integer buscarIDEditora(String nome) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection connection = conexao.conectaBD();
+        PreparedStatement statement = connection.prepareStatement("select * from editora where nome = ?");
+        statement.setString(1, nome);
+
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        Integer id = resultSet.getInt("id");
+        connection.close();
+        return id;
+    }
+
+    public void adicionarEditora(Editora editora, Livro livro) throws SQLException {
+        Conexao conexao = new Conexao();
+        Connection connection = conexao.conectaBD();
+        PreparedStatement statement = connection.prepareStatement("update livro set editora_id = ? where isbn = ?");
+        statement.setInt(1, buscarIDEditora(editora.getNome()));
+        statement.setInt(2, livro.getIsbn());
+
+        statement.execute();
     }
 }

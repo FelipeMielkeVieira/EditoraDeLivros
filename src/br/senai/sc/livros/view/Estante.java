@@ -72,6 +72,7 @@ public class Estante extends JFrame {
                                 String editora = JOptionPane.showInputDialog(null, "Nome da Editora da Publicação:");
                                 EditoraController editoraController = new EditoraController();
                                 if(editoraController.buscar(editora) != null) {
+                                    controller.adicionarEditora(editoraController.buscar(editora), livroAtual);
                                     livroAtual.setEditora(editoraController.buscar(editora));
                                     controller.aprovacao(livroAtual, opcao);
                                     JOptionPane.showMessageDialog(null, "Livro Editado com Sucesso!");

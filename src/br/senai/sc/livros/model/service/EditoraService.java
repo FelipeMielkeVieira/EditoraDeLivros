@@ -8,10 +8,19 @@ public class EditoraService {
     EditoraDAO acesso = new EditoraDAO();
 
     public void inserir(Editora editora) {
-        acesso.inserir(editora);
+        try {
+            acesso.inserir(editora);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Editora selecionar(String nome) {
-        return acesso.selecionar(nome);
+        try {
+            return acesso.selecionar(nome);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

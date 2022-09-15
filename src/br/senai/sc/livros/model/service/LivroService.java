@@ -1,6 +1,7 @@
 package br.senai.sc.livros.model.service;
 
 import br.senai.sc.livros.model.dao.LivroDAO;
+import br.senai.sc.livros.model.entities.Editora;
 import br.senai.sc.livros.model.entities.Livro;
 import br.senai.sc.livros.model.entities.Pessoa;
 import br.senai.sc.livros.model.entities.Status;
@@ -43,10 +44,28 @@ public class LivroService {
     }
 
     public Collection<Livro> selecionarPorStatus(Status status) {
-        return acesso.selecionarPorStatus(status);
+        try {
+            return acesso.selecionarPorStatus(status);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Collection<Livro> selecionarAtividadesAutor(Pessoa pessoa) {
-        return acesso.selecionarAtividadesAutor(pessoa);
+        try {
+            return acesso.selecionarAtividadesAutor(pessoa);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void adicionarEditora(Editora editora, Livro livroAtual) {
+        try {
+         acesso.adicionarEditora(editora, livroAtual);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
