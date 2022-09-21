@@ -12,10 +12,9 @@ public class PessoaFactory {
             case "REVISOR" -> {
                 return new Revisor(nome, sobrenome, email, senha, cpf, Genero.valueOf(genero));
             }
-            case "DIRETOR" -> {
+            default -> {
                 return new Diretor(nome, sobrenome, email, senha, cpf, Genero.valueOf(genero));
             }
         }
-        return null;
     }
 }

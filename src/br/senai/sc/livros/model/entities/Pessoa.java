@@ -1,5 +1,6 @@
 package br.senai.sc.livros.model.entities;
 
+import br.senai.sc.livros.model.factory.PessoaFactory;
 import br.senai.sc.livros.view.Menu;
 
 public abstract class Pessoa {
@@ -57,13 +58,13 @@ public abstract class Pessoa {
 
     public static Pessoa cadastrar(String nome, String sobrenome, String email, String senha, String cpf,
                                    Genero genero, String confirmarSenha) {
-        if(senha.equals(confirmarSenha)) {
-            if(email.contains("@")) {
-                if(Menu.getUsuario() instanceof Diretor) {
-                    return new Revisor(nome, sobrenome, email, senha, cpf, genero);
-                } else {
-                    return new Autor(nome, sobrenome, email, senha, cpf, genero);
+        if (senha.equals(confirmarSenha)) {
+            if (email.contains("@")) {
+                String tipo = "AUTOR";
+                if (Menu.getUsuario() instanceof Diretor) {
+                    tipo = "REVISOR";
                 }
+                return new PessoaFactory().getPessoa(nome, sobrenome, email, senha, cpf, genero.toString(), tipo);
             }
             throw new RuntimeException("Email Incorreto!");
         }

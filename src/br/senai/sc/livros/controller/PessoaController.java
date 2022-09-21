@@ -10,7 +10,7 @@ public class PessoaController {
 
     Pessoa model;
 
-    public Pessoa validaLogin(String email, String senha) throws SQLException {
+    public Pessoa validaLogin(String email, String senha) {
         PessoaService service = new PessoaService();
         model = service.selecionarPorEmail(email);
         return model.validaLogin(senha);
