@@ -13,16 +13,12 @@ public class LivroService {
 
     LivroDAO acesso = new LivroDAO();
 
-    public void inserir(Livro livro) throws SQLException {
+    public void inserir(Livro livro) {
         acesso.inserir(livro);
     }
 
     public void atualizar(int isbn, Livro livroAtualizado) {
-        try {
-            acesso.atualizar(isbn, livroAtualizado);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        acesso.atualizar(isbn, livroAtualizado);
     }
 
     public Collection<Livro> selecionarTodos() {
@@ -35,37 +31,18 @@ public class LivroService {
     }
 
     public Collection<Livro> selecionarPorAutor(Pessoa pessoa) {
-        try {
-            return acesso.selecionarPorAutor(pessoa);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return acesso.selecionarPorAutor(pessoa);
     }
 
     public Collection<Livro> selecionarPorStatus(Status status) {
-        try {
-            return acesso.selecionarPorStatus(status);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return acesso.selecionarPorStatus(status);
     }
 
     public Collection<Livro> selecionarAtividadesAutor(Pessoa pessoa) {
-        try {
-            return acesso.selecionarAtividadesAutor(pessoa);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return acesso.selecionarAtividadesAutor(pessoa);
     }
 
     public void adicionarEditora(Editora editora, Livro livroAtual) {
-        try {
-         acesso.adicionarEditora(editora, livroAtual);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        acesso.adicionarEditora(editora, livroAtual);
     }
 }

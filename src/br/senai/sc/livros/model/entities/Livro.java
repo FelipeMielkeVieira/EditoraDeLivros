@@ -1,5 +1,7 @@
 package br.senai.sc.livros.model.entities;
 
+import br.senai.sc.livros.model.factory.LivroFactory;
+
 public class Livro {
 
     private Autor autor;
@@ -70,7 +72,7 @@ public class Livro {
     }
 
     public static Livro cadastrar(String titulo, int isbn, int qtdPaginas, Autor autor) {
-        return new Livro(titulo, isbn, qtdPaginas, autor, Status.AGUARDANDO_REVISAO);
+        return new LivroFactory().getLivro(titulo, isbn, qtdPaginas, autor, null,null);
     }
 
     @Override

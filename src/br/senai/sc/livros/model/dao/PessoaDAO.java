@@ -61,7 +61,26 @@ public class PessoaDAO {
         } catch (Exception e) {
             throw new RuntimeException("Erro na execução do comando SQL");
         }
+        throw new RuntimeException("E-mail não encontrado!");
+    }
 
+    public Pessoa selecionarPorCPF(String cpf) {
+        String sql = "select * from pessoa where cpf = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, cpf);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if(resultSet != null && resultSet.next()) {
+                    return extrairObjeto(resultSet);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("Erro na execução do comando SQL");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro na execução do comando SQL");
+        }
         throw new RuntimeException("E-mail não encontrado!");
     }
 

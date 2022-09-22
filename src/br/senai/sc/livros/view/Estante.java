@@ -94,13 +94,13 @@ public class Estante extends JFrame {
 
     private void criarComponentes() {
         LivroController controller = new LivroController();
-        try {
+//        try {
             tabelaLivros.setModel(new DefaultTableModelCollection(controller.buscarLista(lista)));
             semLivros.setVisible(false);
-        } catch (RuntimeException exception) {
-            tabelaLivros.setVisible(false);
-            semLivros.setVisible(true);
-        }
+//        } catch (RuntimeException exception) {
+//            tabelaLivros.setVisible(false);
+//            semLivros.setVisible(true);
+//        }
         if(lista == 1 && !(Menu.getUsuario() instanceof Revisor)) {
             editarButton.setVisible(false);
         }
