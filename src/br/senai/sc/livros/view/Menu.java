@@ -59,38 +59,47 @@ public class Menu extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("cadastrarLivro")) {
-            dispose();
-            CadastroLivro cadastroLivro = new CadastroLivro(usuario, null);
-            cadastroLivro.setVisible(true);
-        } else if (e.getActionCommand().equals("listarLivros")) {
-            dispose();
-            Estante estante = new Estante(1);
-            estante.setVisible(true);
-        } else if (e.getActionCommand().equals("listarAtividades")) {
-            dispose();
-            Estante estante = new Estante(2);
-            estante.setVisible(true);
-        } else if (e.getActionCommand().equals("cadastrarRevisor")) {
-            dispose();
-            CadastroPessoa cadastroPessoa = new CadastroPessoa();
-            cadastroPessoa.setVisible(true);
-        } else if (e.getActionCommand().equals("sair")) {
-            usuario = null;
-            dispose();
-            Login login = new Login();
-            login.run();
-        } else if (e.getActionCommand().equals("cadastrarEditora")) {
-            try {
-                String editora = JOptionPane.showInputDialog(null, "Nome da Editora:");
-                if(editora != null) {
-                    EditoraController controller = new EditoraController();
-                    controller.cadastrar(editora);
-                    JOptionPane.showMessageDialog(null, "Editora cadastrada com sucesso!");
-                }
-            } catch (RuntimeException exception) {
-                JOptionPane.showMessageDialog(null, "Deu Ruim");
+        switch (e.getActionCommand()) {
+            case "cadastrarLivro":
+                dispose();
+                CadastroLivro cadastroLivro = new CadastroLivro(usuario, null);
+                cadastroLivro.setVisible(true);
+                break;
+            case "listarLivros": {
+                dispose();
+                Estante estante = new Estante(1);
+                estante.setVisible(true);
+                break;
             }
+            case "listarAtividades": {
+                dispose();
+                Estante estante = new Estante(2);
+                estante.setVisible(true);
+                break;
+            }
+            case "cadastrarRevisor":
+                dispose();
+                CadastroPessoa cadastroPessoa = new CadastroPessoa();
+                cadastroPessoa.setVisible(true);
+                break;
+            case "sair":
+                usuario = null;
+                dispose();
+                Login login = new Login();
+                login.run();
+                break;
+            case "cadastrarEditora":
+                try {
+                    String editora = JOptionPane.showInputDialog(null, "Nome da Editora:");
+                    if (editora != null) {
+                        EditoraController controller = new EditoraController();
+                        controller.cadastrar(editora);
+                        JOptionPane.showMessageDialog(null, "Editora cadastrada com sucesso!");
+                    }
+                } catch (RuntimeException exception) {
+                    JOptionPane.showMessageDialog(null, "Deu Ruim");
+                }
+                break;
         }
     }
 }

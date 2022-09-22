@@ -22,12 +22,7 @@ public class LivroService {
     }
 
     public Collection<Livro> selecionarTodos() {
-        try {
-            return acesso.selecionarTodos();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return acesso.selecionarTodos();
     }
 
     public Collection<Livro> selecionarPorAutor(Pessoa pessoa) {
