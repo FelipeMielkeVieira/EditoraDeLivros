@@ -18,6 +18,7 @@ public class Menu extends JFrame implements ActionListener {
     private JButton listarAtividadesButton;
     private JButton cadastrarRevisorButton;
     private JButton cadastrarEditoraButton;
+    private JButton listarEditorasButton;
     private static Pessoa usuario;
 
     public static Pessoa getUsuario() {
@@ -45,15 +46,18 @@ public class Menu extends JFrame implements ActionListener {
         cadastrarEditoraButton.setActionCommand("cadastrarEditora");
         sairButton.addActionListener(this);
         sairButton.setActionCommand("sair");
+        listarEditorasButton.addActionListener(this);
+        listarEditorasButton.setActionCommand("listarEditoras");
 
-        if(usuario instanceof Autor || usuario instanceof Revisor) {
+        if (usuario instanceof Autor || usuario instanceof Revisor) {
             cadastrarRevisorButton.setVisible(false);
         }
-        if(usuario instanceof Revisor || usuario instanceof Diretor) {
+        if (usuario instanceof Revisor || usuario instanceof Diretor) {
             cadastrarLivrosButton.setVisible(false);
         }
-        if(usuario instanceof Autor || usuario instanceof Revisor) {
+        if (usuario instanceof Autor || usuario instanceof Revisor) {
             cadastrarEditoraButton.setVisible(false);
+            listarEditorasButton.setVisible(false);
         }
     }
 
@@ -99,6 +103,11 @@ public class Menu extends JFrame implements ActionListener {
                 } catch (RuntimeException exception) {
                     JOptionPane.showMessageDialog(null, "Deu Ruim");
                 }
+                break;
+            case "listarEditoras":
+                dispose();
+                EditoraController controller = new EditoraController();
+                JOptionPane.showMessageDialog(null, controller.listarEditoras());
                 break;
         }
     }

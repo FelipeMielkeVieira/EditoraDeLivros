@@ -6,6 +6,8 @@ import br.senai.sc.livros.model.factory.ConexaoFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class EditoraDAO {
 
@@ -89,6 +91,26 @@ public class EditoraDAO {
                 resultSet.next();
                 return resultSet.getInt("id");
 
+            } catch (Exception e) {
+                throw new RuntimeException("Erro na execução do comando SQL");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro na execução do comando SQL");
+        }
+    }
+
+    public Collection<Editora> listarTodas() {
+        String sql = "select * from editora";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+
+                Collection<Editora> listaEditoras = new ArrayList<>();
+                while (resultSet.next()) {
+                    listaEditoras.add(new Editora(resultSet.getString("nome")));
+                }
+                return listaEditoras;
             } catch (Exception e) {
                 throw new RuntimeException("Erro na execução do comando SQL");
             }
